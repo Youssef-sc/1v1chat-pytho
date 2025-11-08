@@ -1,0 +1,10 @@
+1v1chat-python/
+├─ server/
+│  ├─ app.py
+│  ├─ requirements.txt
+│  └─ README_SERVER.md
+├─ client/
+│  ├─ index.html
+│  ├─ style.css
+│  └─ client.js
+└─ README.md

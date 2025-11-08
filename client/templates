@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>1v1 Chat</title>
+</head>
+<body>
+
+<h1>1v1 Chat</h1>
+
+<button onclick="findChat()">Find Partner</button>
+
+<div id="chat" style="display:none;">
+    <h2>Connected!</h2>
+    <div id="messages"></div>
+    <input id="msg" type="text"><button onclick="sendMessage()">Send</button>
+</div>
+
+<script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+<script>
+const socket = io("http://localhost:5000");
+const user_id = Math.random().toString(36).substring(2);
+
+function findChat(){
+    socket.emit("find_partner", {user_id});
+}
+
+socket.on("waiting", data=>{
+    alert("Waiting for another user...");
+});
+
+socket.on("start_chat", data=>{
+    window.room = data.room;
+    document.getElementById("chat").style.display="block";
+});
+
+function sendMessage(){
+    let m = document.getElementById("msg").value;
+    socket.emit("message", {room: window.room, message: m});
+}
+
+socket.on("message", data=>{
+    document.getElementById("messages").innerHTML += `<p>${data.message}</p>`;
+});
+</script>
+
+</body>
+</html>

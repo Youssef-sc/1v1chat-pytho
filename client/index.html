@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Connect with strangers worldwide through free random video chat">
+    <title>ChatRoulette - Free Random Video Chat</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Landing Page (shown initially) -->
+    <div id="landingPage" class="landing-page">
+        <div class="landing-content">
+            <div class="hero-section">
+                <h1 class="hero-title">
+                    <span class="gradient-text">Connect Instantly</span>
+                    <br>with People Worldwide
+                </h1>
+                <p class="hero-subtitle">
+                    Free random video chat with strangers. No registration required.
+                </p>
+                
+                <div class="feature-badges">
+                    <span class="badge">🎥 HD Video</span>
+                    <span class="badge">💬 Text Chat</span>
+                    <span class="badge">🌍 Global</span>
+                    <span class="badge">🔒 Anonymous</span>
+                </div>
+
+                <button id="landingStartBtn" class="start-button">
+                    <span>Start Chatting Now</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-number" id="onlineUsersLanding">0</span>
+                        <span class="stat-label">Online Now</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">1M+</span>
+                        <span class="stat-label">Monthly Users</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">195</span>
+                        <span class="stat-label">Countries</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Connection</h3>
+                    <p>Connect with someone new in seconds. No waiting, no hassle.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Safe & Secure</h3>
+                    <p>Your privacy matters. Chat anonymously with built-in reporting.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Smart Matching</h3>
+                    <p>AI-powered matching finds the best connections for you.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile Ready</h3>
+                    <p>Works perfectly on any device - phone, tablet, or desktop.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Page (shown after start) -->
+    <div id="chatPage" class="chat-page hidden">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🎥</span>
+                    <span class="logo-text">ChatRoulette</span>
+                </div>
+                <div class="header-stats">
+                    <span class="online-indicator">
+                        <span class="pulse-dot"></span>
+                        <span id="onlineUsers">0</span> online
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Chat Area -->
+        <div class="chat-container">
+            <!-- Video Section -->
+            <div class="video-grid">
+                <!-- Remote Video (Stranger) -->
+                <div class="video-panel remote-panel">
+                    <video id="remoteVideo" autoplay playsinline></video>
+                    <div class="video-overlay">
+                        <div class="stranger-info">
+                            <span class="stranger-label">Stranger</span>
+                            <span class="connection-status" id="connectionStatus">
+                                <span class="status-dot"></span>
+                                Connecting...
+                            </span>
+                        </div>
+                    </div>
+                    <div class="video-placeholder" id="remotePlaceholder">
+                        <div class="placeholder-content">
+                            <div class="avatar-placeholder">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <p class="placeholder-text">Waiting for stranger...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Local Video (You) -->
+                <div class="video-panel local-panel">
+                    <video id="localVideo" autoplay muted playsinline></video>
+                    <div class="video-overlay">
+                        <span class="you-label">You</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat & Controls Sidebar -->
+            <div class="sidebar">
+                <!-- Text Chat -->
+                <div class="chat-section">
+                    <div class="chat-header">
+                        <h3>Chat</h3>
+                        <button id="clearChatBtn" class="icon-btn" title="Clear chat">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="chatMessages" class="chat-messages"></div>
+                    <div class="chat-input-container">
+                        <input 
+                            type="text" 
+                            id="chatInput" 
+                            placeholder="Type a message..." 
+                            maxlength="500"
+                            disabled
+                        >
+                        <button id="sendBtn" class="send-btn" disabled>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Control Buttons -->
+                <div class="controls-section">
+                    <div class="primary-controls">
+                        <button id="nextBtn" class="control-btn next-btn" disabled>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M13 17l5-5-5-5M6 17l5-5-5-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Next</span>
+                        </button>
+                        <button id="stopBtn" class="control-btn stop-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="6" y="6" width="12" height="12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Stop</span>
+                        </button>
+                    </div>
+
+                    <div class="secondary-controls">
+                        <button id="toggleVideoBtn" class="icon-btn" title="Toggle camera">
+                            <svg class="icon-on" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M23 7l-7 5 7 5V7zM16 5H1v14h15V5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <svg class="icon-off hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.66 0H14a2 2 0 0 1 2 2v3.34l1 1L23 7v10M1 1l22 22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+
+                        <button id="toggleAudioBtn" class="icon-btn" title="Toggle microphone">
+                            <svg class="icon-on" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <svg class="icon-off hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M1 1l22 22M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23M12 19v4M8 23h8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+
+                        <button id="reportBtn" class="icon-btn report-btn" title="Report user" disabled>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status Info -->
+                <div class="status-info">
+                    <div id="statusMessage" class="status-text">
+                        Click "Next" to find someone new
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div id="reportModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Report User</h3>
+                <button id="closeReportModal" class="close-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Why are you reporting this user?</p>
+                <div class="report-reasons">
+                    <label class="report-option">
+                        <input type="radio" name="reportReason" value="inappropriate">
+                        <span>Inappropriate behavior</span>
+                    </label>
+                    <label class="report-option">
+                        <input type="radio" name="reportReason" value="spam">
+                        <span>Spam or advertising</span>
+                    </label>
+                    <label class="report-option">
+                        <input type="radio" name="reportReason" value="harassment">
+                        <span>Harassment or hate speech</span>
+                    </label>
+                    <label class="report-option">
+                        <input type="radio" name="reportReason" value="underage">
+                        <span>Underage user</span>
+                    </label>
+                    <label class="report-option">
+                        <input type="radio" name="reportReason" value="other">
+                        <span>Other</span>
+                    </label>
+                </div>
+                <button id="submitReportBtn" class="submit-report-btn" disabled>Submit Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="js/client.js"></script>
+</body>
+</html>           }
+        });
+    </script>
+</body>
+</html>
