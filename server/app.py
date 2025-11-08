@@ -1,4 +1,8 @@
 # server/app.py
+
+import eventlet
+eventlet.monkey_patch()   # <--- required for SocketIO + production hosting
+
 import os
 from flask import Flask, send_from_directory, request
 from flask_socketio import SocketIO, emit, join_room, leave_room
@@ -7,6 +11,7 @@ from dotenv import load_dotenv
 import logging
 
 load_dotenv()
+
 
 # Configuration
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
@@ -290,8 +295,12 @@ def default_error_handler(e):
 # ============================================================================
 # Application Entry Point
 # ============================================================================
-
 if __name__ == "__main__":
+    import os
+    from server import app, socketio, logger, REDIS_URL, PORT
+
     logger.info(f"Starting server on port {PORT}")
     logger.info(f"Redis URL: {REDIS_URL}")
-    socketio.run(app, host="127.0.0.1", port=5500, debug=False)
+
+    # في الإنتاج نترك التشغيل لـ Gunicorn، لا تستخدم socketio.run
+    pass
