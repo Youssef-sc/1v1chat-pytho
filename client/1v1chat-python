@@ -1,0 +1,9 @@
+1v1chat-python/
+├─ server/
+│  ├─ app.py              ✅ (from earlier artifact)
+│  ├─ .env                ✅ (REDIS_URL, PORT)
+│  └─ requirements.txt    ✅ (Flask, Socket.IO, Redis)
+├─ client/
+│  ├─ index.html          ✅ (Save artifact "index.html - 1v1chat.me Style")
+│  ├─ style.css           ✅ (Save artifact "style.css - 1v1chat.me Modern Design")
+│  └─ main.js             ✅ (Save this artifact ☝️)

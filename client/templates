@@ -7,39 +7,45 @@
 
 <h1>1v1 Chat</h1>
 
-<button onclick="findChat()">Find Partner</button>
+<button id="findBtn">Find Partner</button>
 
 <div id="chat" style="display:none;">
     <h2>Connected!</h2>
-    <div id="messages"></div>
-    <input id="msg" type="text"><button onclick="sendMessage()">Send</button>
+    <div id="messages" style="border:1px solid #000; height:200px; overflow:auto;"></div>
+    <input id="msg" type="text"><button id="sendBtn">Send</button>
 </div>
 
 <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
 <script>
-const socket = io("http://localhost:5000");
-const user_id = Math.random().toString(36).substring(2);
+const socket = io("http://localhost:5500"); // Port من السيرفر
+let room = null;
 
-function findChat(){
-    socket.emit("find_partner", {user_id});
-}
+// Start matchmaking
+document.getElementById("findBtn").onclick = () => {
+    socket.emit("join");
+    alert("Looking for a partner...");
+};
 
-socket.on("waiting", data=>{
-    alert("Waiting for another user...");
+// Matched event
+socket.on("matched", data => {
+    room = data.room;
+    document.getElementById("chat").style.display = "block";
+    alert("Partner found!");
 });
 
-socket.on("start_chat", data=>{
-    window.room = data.room;
-    document.getElementById("chat").style.display="block";
-});
+// Send chat message
+document.getElementById("sendBtn").onclick = () => {
+    const m = document.getElementById("msg").value;
+    if(m && room){
+        socket.emit("chat_message", { message: m });
+        document.getElementById("messages").innerHTML += `<p><b>You:</b> ${m}</p>`;
+        document.getElementById("msg").value = '';
+    }
+};
 
-function sendMessage(){
-    let m = document.getElementById("msg").value;
-    socket.emit("message", {room: window.room, message: m});
-}
-
-socket.on("message", data=>{
-    document.getElementById("messages").innerHTML += `<p>${data.message}</p>`;
+// Receive chat message
+socket.on("chat_message", data => {
+    document.getElementById("messages").innerHTML += `<p><b>Partner:</b> ${data.message}</p>`;
 });
 </script>
 
